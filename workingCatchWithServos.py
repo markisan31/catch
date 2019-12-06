@@ -72,11 +72,12 @@ while(1):
 
     _,contours,hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL , cv2.CHAIN_APPROX_SIMPLE )
     if ball_catched == False:
-            
+#         camera_servo.write(70)
         if len(contours) > 0 :
             c = max(contours, key=cv2.contourArea)
             M = cv2.moments(c)
             if M["m00"] > 0 :
+                
                 turn_back = False
                 center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
                 cv2.circle(res, center, 5, (0, 0, 255), -1)
@@ -90,15 +91,15 @@ while(1):
                 cv2.circle(res, center, 7, (0, 0, 255), -1)
                 cv2.line(res,(center[0],0),(center[0],480),(0,0,255),1) 
                 cv2.line(res,(0,center[1]),(648,center[1]),(0,0,255),1)
-                print("x: " + str(center[0]))
+#                 print("x: " + str(center[0]))
                 print("y: " + str(center[1]))
 
                 bw.speed = motor_speed
-                if center[0] < 85 and center[1] > 150:
+                if center[0] < 85 and center[1] > 80:
                     fw.turn(38)
                     bw.backward()
-                    print("Ball is on full left")
-                elif center[0] > 85 and center[0] < 170 and center[1] > 150:
+#                     print("Ball is on full left")
+                elif center[0] > 85 and center[0] < 170 and center[1] > 80:
                     fw.turn(63)
                     bw.backward()
                     print("ball is on left")
@@ -106,23 +107,27 @@ while(1):
                     fw.turn(93)
                     bw.backward()
                     print("ball is on right")
-                elif center[0] > 315 and center[1] > 150:
+                elif center[0] > 315 and center[1] > 80:
                     fw.turn(108)
                     bw.backward()
                     print("ball is on full right")
-                elif center[0]  > 170 and center[0] < 230 and center[1] > 150:
+                elif center[0]  > 170 and center[0] < 230 and center[1] > 80:
+#                     camera_servo.write(45)
                     fw.turn(78)
                     print("ball is on center")
+                    if center[1] > 150:
+                        camera_servo.write(45)
                 if servopos == False :
                     print("hello")
                     if center[0]  > 170 and center[0] < 230 and center[1] > 200 :
+                        camera_servo.write(45)
                         fw.turn(78)
                             #catch_servo.write(100)
                             #time.sleep(0.2)
                             #catch_servo.write(110)
                             #time.sleep(0.2)
                         catch_servo.write(PULL_DOWN)
-                        camera_servo.write(70)
+                        camera_servo.write(60)
     #                         bw.stop()  
                         ball_catched = True
     #                         motor_speed = 0
@@ -133,12 +138,17 @@ while(1):
                         
                     if center[1] > 185 :
                         print("yes")
-                        camera_servo.write(45)
+#                         camera_servo.write(45)
                         servopos = False
     #                 else:
     #                     catch_servo.write(105)
             else :
-                turn_back = True
+#                 fw.turn(38)
+                camera_servo.write(70)
+                print("no balls")
+                bw.speed = motor_speed
+                bw.forward()
+#                 turn_back = True
                     
             
     #     cv2.imshow('frame',frame)
@@ -160,6 +170,7 @@ while(1):
 
     _,contours,hierarchy = cv2.findContours(mask_gray, cv2.RETR_EXTERNAL , cv2.CHAIN_APPROX_SIMPLE )
     if ball_catched == True:
+#         camera_servo.write(70)
         if len(contours) > 0 :
             c = max(contours, key=cv2.contourArea)
             M = cv2.moments(c)
@@ -196,14 +207,22 @@ while(1):
                     bw.backward()
                     print("gray found")
                 if servopos1 == False:
-                        
-                    if center_gray[1] > 200 :
+                    print('line 199')
+                    print(center_gray[1])
+                    if center_gray[1] > 150 and  center_gray[1] < 200:
+                        camera_servo.write(45)
+                    elif center_gray[1] > 200 :
+#                         print(center_gray[1])
                         fw.turn(78)
+#                         camera_servo.write(45)
                             #catch_servo.write(100)
                             #time.sleep(0.2)
                             #catch_servo.write(110)
                             #time.sleep(0.2)
                         catch_servo.write(PULL_UP)
+                        print('line 208')
+                        camera_servo.write(70)
+#                         camera_servo.write(70)
                             # camera_servo.write(70)
     #                         bw.forward()
                             
@@ -211,14 +230,18 @@ while(1):
 #                         ball_catched = False
                         turn_back = True
                         bw.forward()
+                        print('line 216')
                         fw.turn(58)
+                        print('line 218')
                         time.sleep(5)
+                        print('line 219')
                         ball_catched = False
+                        print('line 222')
                 if servopos1 == True :
                     print(center[1])
                     print("mis toimub?")
                     if center[1] > 185 :  
-                        camera_servo.write(45)
+#                         camera_servo.write(45)
                         servopos1 = False
                     # elif center[1] > 250 :
                         # camera_servo.write(45)
@@ -226,7 +249,7 @@ while(1):
                         # catch_servo.write(105)
             elif M["m00"] == 0 :
                 fw.turn(63)
-                bw.backward()
+                bw.forward()
                     # print("no balls detected")
     #                 bw.stop()
 
