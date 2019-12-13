@@ -61,8 +61,10 @@ while(1):
     ##    lower_orange = np.array([5,75,125])
     lower_orange = np.array([1,62,239])
     upper_orange = np.array([23,184,255])
-    lower_gray = np.array([100,60,100])
-    upper_gray = np.array([130,255,255])
+#     lower_gray = np.array([100,60,100])
+#     upper_gray = np.array([130,255,255])
+    lower_gray = np.array([46,101,42])
+    upper_gray = np.array([95,255,243])
 
         # Threshold the HSV image to get only orange colors
     mask = cv2.inRange(hsv, lower_orange, upper_orange)
@@ -254,7 +256,7 @@ while(1):
     #                 bw.stop()
 
     cv2.imshow('frame',frame)
-#     cv2.imshow('mask_gray',mask_gray)
+    cv2.imshow('mask_gray',mask_gray)
     # #cv2.imshow('res_gray',res_gray)
     # k = cv2.waitKey(1) & 0xFF
 
