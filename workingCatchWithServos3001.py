@@ -40,7 +40,7 @@ fps = FPS().start()
 center = (0, 0)
 error_x = 0
 
-time.sleep(3)
+time.sleep(2)
 
 def catch_ball():
     global ball_catched, servopos, servopos1
@@ -95,15 +95,23 @@ def catch_ball():
                         fw.turn(78)
 
                         catch_servo.write(PULL_DOWN)
-                        camera_servo.write(60)
-                        ball_catched = True
-                        print("ball catched")
-
-                        # fw.turn(38)
                         bw.forward()
-                        fw.turn(78)
-                        time.sleep(3)
-#                         servopos1 = True
+                        time.sleep(2)
+                        bw.stop()
+
+                        
+                        if 170 < center[0] < 230 and center[1] > 230:
+                            camera_servo.write(60)
+                            ball_catched = True
+                            print("ball catched")
+
+                            # fw.turn(38)
+                            bw.forward()
+                            # fw.turn(78)
+                            time.sleep(1)
+    #                         servopos1 = True
+                        else:
+                            pass
                 if servopos:
                     if center[1] > 185:
                         servopos = False
