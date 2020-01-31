@@ -98,7 +98,7 @@ def catch_ball():
                         bw.forward()
                         time.sleep(2)
                         bw.stop()
-
+                        print("checkin' if ball catched???")
                         
                         if 170 < center[0] < 230 and center[1] > 230:
                             camera_servo.write(60)
@@ -111,7 +111,7 @@ def catch_ball():
                             time.sleep(1)
     #                         servopos1 = True
                         else:
-                            pass
+                            print("ball not catched.. try again")
                 if servopos:
                     if center[1] > 185:
                         servopos = False
