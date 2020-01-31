@@ -40,16 +40,17 @@ fps = FPS().start()
 center = (0, 0)
 error_x = 0
 
-time.sleep(2)
+time.sleep(3)
 
 def catch_ball():
     global ball_catched, servopos, servopos1
-    bw.speed = motor_speed
+#     bw.speed = motor_speed
     if not ball_catched:
         if len(contours_orange) > 0:
             c = max(contours_orange, key=cv2.contourArea)
             M = cv2.moments(c)
             if M["m00"] > 0:
+                print("hello")
                 center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
                 cv2.circle(res, center, 5, (0, 0, 255), -1)
 
@@ -100,11 +101,11 @@ def catch_ball():
                         bw.stop()
                         print("checkin' if ball catched???")
                         
-                        if 170 < center[0] < 230 and center[1] > 230:
+                        if 170 < center[0] < 230 and center[1] > 200:
                             camera_servo.write(60)
                             ball_catched = True
                             print("ball catched")
-
+                            bw.speed = motor_speed
                             # fw.turn(38)
                             bw.forward()
                             # fw.turn(78)
@@ -115,13 +116,14 @@ def catch_ball():
                 if servopos:
                     if center[1] > 185:
                         servopos = False
-            else:               
+            else:
+                print("no hello")
                 camera_servo.write(70)
                 fw.turn(random.randint(38,108))
                 print("no balls")
                 bw.speed = motor_speed
-                time.sleep(0.5)
-#                 bw.forward()
+                time.sleep(1)
+                bw.forward()
     
 def ignore_ring_while_finding_ball():
     if len(contours_green) > 0:
@@ -134,9 +136,9 @@ def ignore_ring_while_finding_ball():
             camera_servo.write(70)            
 #             bw.speed = motor_speed
 #             bw.backward()
-            time.sleep(4)
+            time.sleep(2)
             fw.turn(108)
-            time.sleep(3)
+            time.sleep(2)
 
 
 def find_ring_and_put_ball():
@@ -146,7 +148,7 @@ def find_ring_and_put_ball():
         c = max(contours_green, key=cv2.contourArea)
         M = cv2.moments(c)
         print(M["m00"])
-        if M["m00"] > 20:
+        if M["m00"] > 10:
             center_green = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
             cv2.circle(res_green, center_green, 5, (0, 0, 255), -1)
 
@@ -203,7 +205,7 @@ def find_ring_and_put_ball():
             print("no rings")
 #             bw.speed = motor_speed
             bw.forward()
-            time.sleep(0.5)
+            time.sleep(1)
 
 
 
